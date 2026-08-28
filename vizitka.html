@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Пётр Камший — презентации и документы</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;color:#173B34;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:0 24px}
+/* Hero */
+.hero{background:linear-gradient(135deg,#0E8A5F,#173B34);color:#fff;padding:60px 24px 48px;text-align:center}
+.hero img{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);margin-bottom:16px}
+.hero h1{font-size:36px;font-weight:700;margin-bottom:4px}
+.hero .tag{font-size:18px;color:#B8D9C7;margin-bottom:4px}
+.hero .location{font-size:14px;color:#8ABBA2}
+/* Section */
+.section{padding:48px 0}
+.section-title{font-size:22px;font-weight:700;margin-bottom:24px;color:#0E8A5F;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:2px;background:#D7E4DC}
+/* Price table */
+.price-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #D7E4DC}
+.price-table th{background:#0E8A5F;color:#fff;padding:12px 16px;text-align:left;font-size:14px;font-weight:600}
+.price-table td{padding:12px 16px;border-bottom:1px solid #E8F0EC;font-size:15px}
+.price-table tr:last-child td{border-bottom:none}
+.price-table .price-col{font-weight:700;color:#0E8A5F;white-space:nowrap}
+.price-table .time-col{color:#5F7A6A;font-size:13px}
+.price-table tr:hover td{background:#F4FBF7}
+/* Extra note */
+.note-card{background:#fff;border-radius:12px;padding:24px;border:1px solid #D7E4DC;margin-top:20px;font-size:14px;color:#5F7A6A}
+.note-card strong{color:#173B34}
+/* Services grid */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.service-card{background:#fff;border-radius:12px;padding:24px;border:1px solid #D7E4DC;transition:box-shadow .2s}
+.service-card:hover{box-shadow:0 4px 16px rgba(14,138,95,0.1)}
+.service-card h3{font-size:18px;font-weight:700;color:#173B34;margin-bottom:6px}
+.service-card p{font-size:14px;color:#5F7A6A;margin-bottom:12px}
+/* Form */
+.form-card{background:#fff;border-radius:12px;padding:32px;border:1px solid #D7E4DC}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:14px;font-weight:600;color:#173B34;margin-bottom:6px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid #D7E4DC;border-radius:8px;font-size:15px;font-family:inherit;color:#173B34;background:#FAFCFA;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#0E8A5F;background:#fff}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{display:inline-block;background:#0E8A5F;color:#fff;padding:14px 32px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn:hover{background:#0B7350}
+.btn-block{width:100%}
+/* Contact links */
+.contacts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
+.contact-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;transition:all .2s;border:1px solid #D7E4DC;color:#173B34;background:#fff}
+.contact-btn:hover{border-color:#0E8A5F;background:#F4FBF7}
+.contact-btn.primary{background:#0E8A5F;color:#fff;border-color:#0E8A5F}
+.contact-btn.primary:hover{background:#0B7350}
+.footer{text-align:center;padding:32px 0;font-size:13px;color:#8ABBA2}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="avatar-petr.jpg" alt="Аватар">
+  <h1>Пётр Камший</h1>
+  <p class="tag">Оформление презентаций · Word · Excel</p>
+  <p class="location">📍 Краснодар</p>
+</div>
+
+<div class="container">
+  <!-- Преимущества -->
+  <div class="section">
+    <div class="section-title">Почему я</div>
+    <div class="services">
+      <div class="service-card">
+        <h3>✅ Доступные цены</h3>
+        <p>От 300 ₽ за работу. Качественное оформление без переплат.</p>
+      </div>
+      <div class="service-card">
+        <h3>⭐ Высокое качество</h3>
+        <p>Единый стиль, аккуратный дизайн, внимание к деталям. Вы получите работу, которую не стыдно показать.</p>
+      </div>
+      <div class="service-card">
+        <h3>🔒 Гарантия возврата</h3>
+        <p>Если работа не понравится — верну деньги. Мой принцип: клиент доволен или я зря взялся.</p>
+      </div>
+    </div>
+    <div class="note-card" style="border-left:4px solid #0E8A5F">
+      <strong>💡 Как работаю:</strong> После обсуждения заказа — <strong>полная предоплата</strong>. Это гарантирует, что я сразу начинаю работу, а вы получаете результат в срок. Если работа не понравится — верну деньги.
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Что делаю</div>
+    <div class="services">
+      <div class="service-card">
+        <h3>📊 PowerPoint</h3>
+        <p>Презентации для защиты проектов, уроков, рефератов, докладов. Единый стиль, качественный дизайн.</p>
+      </div>
+      <div class="service-card">
+        <h3>📝 Word</h3>
+        <p>Документы, отчёты, письма, рефераты. Оформление по ГОСТ — по запросу.</p>
+      </div>
+      <div class="service-card">
+        <h3>📈 Excel</h3>
+        <p>Таблицы, сметы, расчёты, бюджеты, простые дашборды с формулами.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Портфолио -->
+  <div class="section">
+    <div class="section-title">Примеры работ</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="padding:0;overflow:hidden">
+        <img src="portfolio-preview.jpg" alt="Презентация Разведение гусей" style="width:100%;height:200px;object-fit:cover;display:block">
+        <div style="padding:16px 20px">
+          <h3 style="font-size:16px;font-weight:700;color:#173B34;margin-bottom:4px">Разведение и выращивание гусей</h3>
+          <p style="font-size:13px;color:#5F7A6A;margin-bottom:10px">Проект 9 класс · 15 слайдов</p>
+          <a href="https://raw.githubusercontent.com/Peter937-dev/vizitka1/main/razvedenie-gusey.pptx" class="btn" style="font-size:13px;padding:8px 16px">📥 Смотреть пример</a>
+        </div>
+      </div>
+      <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:320px;border:2px dashed #D7E4DC;background:#FAFCFA">
+        <div style="text-align:center;padding:24px">
+          <div style="font-size:40px;margin-bottom:8px">➕</div>
+          <p style="font-size:14px;color:#5F7A6A">Скоро здесь появится ваша работа</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Прайс-лист</div>
+    <table class="price-table">
+      <tr>
+        <th>Услуга</th>
+        <th>Объём</th>
+        <th>Срок</th>
+        <th>Цена</th>
+      </tr>
+      <tr>
+        <td>Презентация</td>
+        <td>5–7 слайдов</td>
+        <td class="time-col">1 день</td>
+        <td class="price-col">300–500 ₽</td>
+      </tr>
+      <tr>
+        <td>Презентация</td>
+        <td>8–12 слайдов</td>
+        <td class="time-col">1–2 дня</td>
+        <td class="price-col">500–800 ₽</td>
+      </tr>
+      <tr>
+        <td>Презентация</td>
+        <td>10–15 слайдов</td>
+        <td class="time-col">2 дня</td>
+        <td class="price-col">700–1 500 ₽</td>
+      </tr>
+      <tr>
+        <td>Документ Word</td>
+        <td>до 10 страниц</td>
+        <td class="time-col">1 день</td>
+        <td class="price-col">от 300 ₽</td>
+      </tr>
+      <tr>
+        <td>Word + ГОСТ</td>
+        <td>до 10 страниц</td>
+        <td class="time-col">1–2 дня</td>
+        <td class="price-col">от 500 ₽</td>
+      </tr>
+      <tr>
+        <td>Excel (таблица / смета)</td>
+        <td>—</td>
+        <td class="time-col">1 день</td>
+        <td class="price-col">от 300 ₽</td>
+      </tr>
+      <tr>
+        <td>Срочный заказ</td>
+        <td>2–3 часа</td>
+        <td class="time-col">В день заказа</td>
+        <td class="price-col">+30%</td>
+      </tr>
+    </table>
+    <div class="note-card">
+      <strong>Важно:</strong> Если у вас нет готового материала, а есть только тема — я могу сам найти информацию и сделать всё «под ключ». Цена обсуждается индивидуально.
+    </div>
+  </div>
+
+  <!-- Форма заказа -->
+  <div class="section">
+    <div class="section-title">Оставить заявку</div>
+    <div class="form-card">
+      <form id="orderForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Как к вам обращаться</label>
+            <input type="text" name="name" id="name" placeholder="Имя" required>
+          </div>
+          <div class="form-group">
+            <label for="contact">Telegram / VK / Email</label>
+            <input type="text" name="contact" id="contact" placeholder="@username или email" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type">Что нужно сделать</label>
+          <select name="type" id="type">
+            <option value="Презентация">Презентация</option>
+            <option value="Документ Word">Документ Word</option>
+            <option value="Таблица Excel">Таблица Excel</option>
+            <option value="Другое">Другое</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="topic">Тема и подробности</label>
+          <textarea name="topic" id="topic" placeholder="Опишите тему: о чём презентация, сколько слайдов, есть ли материал, срок" required></textarea>
+        </div>
+        <input type="hidden" name="access_key" value="5a3c5a23-1c2a-4b1e-9e5c-8f2d7c1e3b9d">
+        <input type="hidden" name="subject" value="Новая заявка с сайта">
+        <input type="checkbox" name="botcheck" style="display:none">
+        <button type="submit" class="btn btn-block">📨 Отправить заявку</button>
+      </form>
+      <div id="formSuccess" style="display:none;text-align:center;padding:40px 0">
+        <div style="font-size:48px;margin-bottom:12px">✅</div>
+        <h3 style="color:#0E8A5F;margin-bottom:8px">Заявка отправлена!</h3>
+        <p style="color:#5F7A6A">Я свяжусь с вами в ближайшее время. Спасибо!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Контакты -->
+  <div class="section">
+    <div class="section-title">Мои контакты</div>
+    <div class="contacts">
+      <a href="mailto:Solaga16@yandex.ru" class="contact-btn primary">✉️ Почта</a>
+      <a href="tg://resolve?domain=MelodyBattler" class="contact-btn">💬 Telegram</a>
+      <a href="https://vk.com/idpetrov8961" target="_blank" class="contact-btn">💬 VK</a>
+      <a href="tel:+79615179410" class="contact-btn">📞 Позвонить</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Пётр Камший · Краснодар · 2026</div>
+
+<script>
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var form = this;
+  var data = new FormData(form);
+  fetch('https://api.web3forms.com/submit', { method: 'POST', body: data })
+    .then(function(res) { return res.json(); })
+    .then(function(json) {
+      if (json.success) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }
+    });
+});
+</script>
+
+</body>
+</html>
