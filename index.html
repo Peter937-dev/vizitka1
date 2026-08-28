@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,99 +7,249 @@
 <title>Пётр Камший — презентации и документы</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;color:#173B34;line-height:1.6}
-.container{max-width:960px;margin:0 auto;padding:0 24px}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;color:#173B34;line-height:1.6;overflow-x:hidden}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(14,138,95,0.4)}50%{box-shadow:0 0 0 12px rgba(14,138,95,0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes countUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.animate-fade{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.animate-fade.visible{opacity:1!important;transform:translateY(0)!important}
+.animate-fade-1{transition-delay:0.1s}.animate-fade-2{transition-delay:0.2s}.animate-fade-3{transition-delay:0.3s}
+.animate-fade-4{transition-delay:0.4s}.animate-fade-5{transition-delay:0.5s}
+
 /* Hero */
-.hero{background:linear-gradient(135deg,#0E8A5F,#173B34);color:#fff;padding:60px 24px 48px;text-align:center}
-.hero img{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);margin-bottom:16px}
-.hero h1{font-size:36px;font-weight:700;margin-bottom:4px}
-.hero .tag{font-size:18px;color:#B8D9C7;margin-bottom:4px}
-.hero .location{font-size:14px;color:#8ABBA2}
+.hero{background:linear-gradient(135deg,#0E8A5F 0%,#0A6B48 40%,#173B34 100%);color:#fff;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,0.06) 0%,transparent 50%);animation:float 8s ease-in-out infinite;pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,#F4F7F2,transparent)}
+.hero-content{position:relative;z-index:1;max-width:600px;margin:0 auto}
+.hero img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid rgba(255,255,255,0.25);margin-bottom:20px;animation:scaleIn 0.8s ease,float 6s ease-in-out 1s infinite;transition:transform 0.3s;cursor:pointer}
+.hero img:hover{transform:scale(1.08)}
+.hero h1{font-size:42px;font-weight:800;margin-bottom:6px;letter-spacing:-0.5px;animation:fadeUp 0.8s ease 0.2s both}
+.hero .tag{font-size:20px;color:#B8D9C7;margin-bottom:6px;font-weight:500;animation:fadeUp 0.8s ease 0.35s both}
+.hero .location{font-size:15px;color:#8ABBA2;display:flex;align-items:center;justify-content:center;gap:6px;animation:fadeUp 0.8s ease 0.5s both}
+.hero .hero-stat{display:flex;justify-content:center;gap:48px;margin-top:32px;animation:fadeUp 0.8s ease 0.6s both}
+.hero .hero-stat-item{text-align:center}
+.hero .hero-stat-num{font-size:32px;font-weight:800;color:#fff}
+.hero .hero-stat-label{font-size:13px;color:#8ABBA2;margin-top:2px}
+
+.container{max-width:960px;margin:0 auto;padding:0 24px}
+
 /* Section */
-.section{padding:48px 0}
-.section-title{font-size:22px;font-weight:700;margin-bottom:24px;color:#0E8A5F;display:flex;align-items:center;gap:10px}
-.section-title::after{content:'';flex:1;height:2px;background:#D7E4DC}
-/* Price table */
-.price-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #D7E4DC}
-.price-table th{background:#0E8A5F;color:#fff;padding:12px 16px;text-align:left;font-size:14px;font-weight:600}
-.price-table td{padding:12px 16px;border-bottom:1px solid #E8F0EC;font-size:15px}
-.price-table tr:last-child td{border-bottom:none}
-.price-table .price-col{font-weight:700;color:#0E8A5F;white-space:nowrap}
-.price-table .time-col{color:#5F7A6A;font-size:13px}
-.price-table tr:hover td{background:#F4FBF7}
-/* Extra note */
-.note-card{background:#fff;border-radius:12px;padding:24px;border:1px solid #D7E4DC;margin-top:20px;font-size:14px;color:#5F7A6A}
-.note-card strong{color:#173B34}
-/* Services grid */
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.service-card{background:#fff;border-radius:12px;padding:24px;border:1px solid #D7E4DC;transition:box-shadow .2s}
-.service-card:hover{box-shadow:0 4px 16px rgba(14,138,95,0.1)}
+.section{padding:56px 0}
+.section-title{font-size:26px;font-weight:700;margin-bottom:28px;color:#0E8A5F;display:flex;align-items:center;gap:12px;animation:fadeUp 0.6s ease both}
+.section-title::after{content:'';flex:1;height:2px;background:linear-gradient(to right,#0E8A5F,transparent)}
+.section-title span{background:#0E8A5F;color:#fff;font-size:14px;padding:2px 10px;border-radius:20px;font-weight:600}
+
+/* Why me */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.why-card{background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #E8F0EC;transition:all 0.3s;cursor:default;animation:fadeUp 0.6s ease both}
+.why-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(14,138,95,0.12);border-color:#0E8A5F}
+.why-card .icon{font-size:36px;margin-bottom:12px;display:block}
+.why-card h3{font-size:17px;font-weight:700;color:#173B34;margin-bottom:6px}
+.why-card p{font-size:14px;color:#5F7A6A;line-height:1.5}
+.why-note{background:linear-gradient(135deg,#F4FBF7,#E8F6EE);border-radius:12px;padding:20px 24px;border-left:4px solid #0E8A5F;font-size:14px;color:#173B34;animation:fadeUp 0.6s ease 0.3s both}
+.why-note strong{color:#0E8A5F}
+
+/* Services */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.service-card{background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #E8F0EC;transition:all 0.4s;cursor:default;position:relative;overflow:hidden;animation:fadeUp 0.6s ease both}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,#0E8A5F,#5F7A6A);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.service-card:hover::before{transform:scaleX(1)}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(14,138,95,0.1)}
 .service-card h3{font-size:18px;font-weight:700;color:#173B34;margin-bottom:6px}
-.service-card p{font-size:14px;color:#5F7A6A;margin-bottom:12px}
+.service-card p{font-size:14px;color:#5F7A6A;margin-bottom:0;line-height:1.5}
+.service-card .emoji{font-size:32px;margin-bottom:10px;display:block}
+
+/* Portfolio */
+.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.portfolio-item{background:#fff;border-radius:16px;overflow:hidden;border:1px solid #E8F0EC;transition:all 0.4s;animation:fadeUp 0.6s ease both}
+.portfolio-item:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(14,138,95,0.12)}
+.portfolio-item img{width:100%;height:220px;object-fit:cover;display:block;transition:transform 0.5s}
+.portfolio-item:hover img{transform:scale(1.05)}
+.portfolio-item .info{padding:16px 20px 20px}
+.portfolio-item h3{font-size:16px;font-weight:700;color:#173B34;margin-bottom:4px}
+.portfolio-item .meta{font-size:13px;color:#5F7A6A;margin-bottom:10px}
+.portfolio-item .btn{display:inline-block;background:#0E8A5F;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s}
+.portfolio-item .btn:hover{background:#0B7350;transform:translateY(-1px);box-shadow:0 4px 12px rgba(14,138,95,0.3)}
+.portfolio-empty{display:flex;align-items:center;justify-content:center;min-height:300px;border:2px dashed #D7E4DC;border-radius:16px;background:#FAFCFA;transition:all 0.3s;animation:fadeUp 0.6s ease 0.3s both}
+.portfolio-empty:hover{border-color:#0E8A5F;background:#F4FBF7}
+.portfolio-empty .empty-content{text-align:center;padding:32px}
+.portfolio-empty .empty-icon{font-size:40px;margin-bottom:8px;opacity:0.4}
+
+/* Price table */
+.price-table-wrap{background:#fff;border-radius:16px;overflow:hidden;border:1px solid #E8F0EC;animation:fadeUp 0.6s ease both}
+.price-table{width:100%;border-collapse:collapse}
+.price-table th{background:linear-gradient(135deg,#0E8A5F,#0A6B48);color:#fff;padding:14px 20px;text-align:left;font-size:14px;font-weight:600;letter-spacing:0.3px}
+.price-table td{padding:14px 20px;border-bottom:1px solid #F0F5F2;font-size:15px;transition:background 0.2s}
+.price-table tr:last-child td{border-bottom:none}
+.price-table tr:hover td{background:#F4FBF7}
+.price-table .price-col{font-weight:700;color:#0E8A5F;white-space:nowrap;font-size:16px}
+.price-table .time-col{color:#5F7A6A;font-size:13px}
+.price-table .badge{display:inline-block;background:#FFF3E0;color:#E65100;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;margin-left:6px}
+
 /* Form */
-.form-card{background:#fff;border-radius:12px;padding:32px;border:1px solid #D7E4DC}
-.form-group{margin-bottom:16px}
+.form-card{background:#fff;border-radius:16px;padding:36px;border:1px solid #E8F0EC;animation:fadeUp 0.6s ease both}
+.form-group{margin-bottom:20px}
 .form-group label{display:block;font-size:14px;font-weight:600;color:#173B34;margin-bottom:6px}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid #D7E4DC;border-radius:8px;font-size:15px;font-family:inherit;color:#173B34;background:#FAFCFA;transition:border-color .2s}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#0E8A5F;background:#fff}
-.form-group textarea{resize:vertical;min-height:100px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 16px;border:2px solid #E8F0EC;border-radius:10px;font-size:15px;font-family:inherit;color:#173B34;background:#FAFCFA;transition:all 0.3s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#0E8A5F;background:#fff;box-shadow:0 0 0 4px rgba(14,138,95,0.1)}
+.form-group textarea{resize:vertical;min-height:110px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.btn{display:inline-block;background:#0E8A5F;color:#fff;padding:14px 32px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s}
-.btn:hover{background:#0B7350}
+.btn{display:inline-block;background:#0E8A5F;color:#fff;padding:14px 32px;border-radius:10px;border:none;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.3s;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.15);border-radius:50%;transform:translate(-50%,-50%);transition:width 0.5s,height 0.5s}
+.btn:active::after{width:300px;height:300px}
+.btn:hover{background:#0B7350;transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,138,95,0.3)}
 .btn-block{width:100%}
-/* Contact links */
-.contacts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
-.contact-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;transition:all .2s;border:1px solid #D7E4DC;color:#173B34;background:#fff}
-.contact-btn:hover{border-color:#0E8A5F;background:#F4FBF7}
+.btn-primary{background:#0E8A5F;color:#fff;border:none}
+.btn-outline{background:transparent;color:#0E8A5F;border:2px solid #0E8A5F;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{background:#0E8A5F;color:#fff;transform:translateY(-2px)}
+
+/* Contacts */
+.contacts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;animation:fadeUp 0.6s ease both}
+.contact-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;transition:all 0.3s;border:2px solid #E8F0EC;color:#173B34;background:#fff}
+.contact-btn:hover{border-color:#0E8A5F;color:#0E8A5F;transform:translateY(-2px);box-shadow:0 4px 12px rgba(14,138,95,0.1)}
 .contact-btn.primary{background:#0E8A5F;color:#fff;border-color:#0E8A5F}
-.contact-btn.primary:hover{background:#0B7350}
-.footer{text-align:center;padding:32px 0;font-size:13px;color:#8ABBA2}
+.contact-btn.primary:hover{background:#0B7350;color:#fff}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.step-card{text-align:center;padding:28px 16px;background:#fff;border-radius:16px;border:1px solid #E8F0EC;transition:all 0.3s;animation:fadeUp 0.6s ease both}
+.step-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(14,138,95,0.1)}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0E8A5F,#0A6B48);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;animation:pulse 2s infinite}
+.step-card h3{font-size:16px;font-weight:700;color:#173B34;margin-bottom:4px}
+.step-card p{font-size:13px;color:#5F7A6A}
+
+/* Success */
+.success-block{display:none;text-align:center;padding:48px 0}
+.success-block .check{font-size:56px;margin-bottom:12px;animation:scaleIn 0.5s ease}
+.success-block h3{color:#0E8A5F;font-size:24px;margin-bottom:8px}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0;font-size:13px;color:#8ABBA2;border-top:1px solid #E8F0EC;margin-top:16px}
+
+/* Scroll to top */
+.scroll-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:#0E8A5F;color:#fff;border:none;font-size:20px;cursor:pointer;opacity:0;visibility:hidden;transition:all 0.3s;z-index:999;box-shadow:0 4px 16px rgba(14,138,95,0.3)}
+.scroll-top.visible{opacity:1;visibility:visible}
+.scroll-top:hover{transform:translateY(-3px);background:#0B7350}
+
+/* Responsive */
+@media(max-width:768px){
+  .why-grid,.services,.steps,.portfolio-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .hero{padding:48px 16px 40px}
+  .hero h1{font-size:30px}
+  .hero .hero-stat{gap:24px;flex-wrap:wrap}
+  .contacts{flex-direction:column;align-items:stretch}
+  .contact-btn{justify-content:center}
+  .price-table td,.price-table th{padding:10px 12px;font-size:13px}
+}
 </style>
 </head>
 <body>
 
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 <div class="hero">
-  <img src="avatar-petr.jpg" alt="Аватар">
-  <h1>Пётр Камший</h1>
-  <p class="tag">Оформление презентаций · Word · Excel</p>
-  <p class="location">📍 Краснодар</p>
+  <div class="hero-content">
+    <img src="avatar-petr.jpg" alt="Аватар">
+    <h1>Пётр Камший</h1>
+    <p class="tag">Оформление презентаций · Word · Excel</p>
+    <p class="location">📍 Краснодар · Работаю по всей России</p>
+    <div class="hero-stat">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">50+</div>
+        <div class="hero-stat-label">довольных клиентов</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">2 ч</div>
+        <div class="hero-stat-label">средний срок</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">гарантия качества</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container">
-  <!-- Преимущества -->
+  <!-- Почему я -->
   <div class="section">
-    <div class="section-title">Почему я</div>
-    <div class="services">
-      <div class="service-card">
-        <h3>✅ Доступные цены</h3>
+    <div class="section-title animate-fade animate-fade-1">Почему я <span>ТОП</span></div>
+    <div class="why-grid">
+      <div class="why-card animate-fade animate-fade-1">
+        <span class="icon">✅</span>
+        <h3>Доступные цены</h3>
         <p>От 300 ₽ за работу. Качественное оформление без переплат.</p>
       </div>
-      <div class="service-card">
-        <h3>⭐ Высокое качество</h3>
-        <p>Единый стиль, аккуратный дизайн, внимание к деталям. Вы получите работу, которую не стыдно показать.</p>
+      <div class="why-card animate-fade animate-fade-2">
+        <span class="icon">⭐</span>
+        <h3>Высокое качество</h3>
+        <p>Единый стиль, аккуратный дизайн, внимание к деталям.</p>
       </div>
-      <div class="service-card">
-        <h3>🔒 Гарантия возврата</h3>
-        <p>Если работа не понравится — верну деньги. Мой принцип: клиент доволен или я зря взялся.</p>
+      <div class="why-card animate-fade animate-fade-3">
+        <span class="icon">🔒</span>
+        <h3>Гарантия возврата</h3>
+        <p>Не понравится — верну деньги. Клиент доволен или я зря взялся.</p>
       </div>
     </div>
-    <div class="note-card" style="border-left:4px solid #0E8A5F">
-      <strong>💡 Как работаю:</strong> После обсуждения заказа — <strong>полная предоплата</strong>. Это гарантирует, что я сразу начинаю работу, а вы получаете результат в срок. Если работа не понравится — верну деньги.
+    <div class="why-note animate-fade animate-fade-4">
+      <strong>💡 Как работаю:</strong> После обсуждения заказа — <strong>полная предоплата</strong>. Это гарантирует, что я сразу начинаю работу, а вы получаете результат в срок.
     </div>
   </div>
+
+  <!-- Как заказать -->
   <div class="section">
-    <div class="section-title">Что делаю</div>
+    <div class="section-title animate-fade animate-fade-1">Как заказать</div>
+    <div class="steps">
+      <div class="step-card animate-fade animate-fade-1">
+        <div class="step-num">1</div>
+        <h3>Оставьте заявку</h3>
+        <p>Напишите тему и подробности через форму или в Telegram</p>
+      </div>
+      <div class="step-card animate-fade animate-fade-2">
+        <div class="step-num">2</div>
+        <h3>Обсуждаем детали</h3>
+        <p>Я называю цену и срок, вы подтверждаете — я начинаю</p>
+      </div>
+      <div class="step-card animate-fade animate-fade-3">
+        <div class="step-num">3</div>
+        <h3>Полная предоплата</h3>
+        <p>Оплачиваете заказ — я сразу приступаю. Это гарантирует, что работа будет готова в срок</p>
+      </div>
+      <div class="step-card animate-fade animate-fade-4">
+        <div class="step-num">4</div>
+        <h3>Получаете работу</h3>
+        <p>Готовый файл приходит вам на почту. Вношу правки бесплатно</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Услуги -->
+  <div class="section">
+    <div class="section-title animate-fade animate-fade-1">Что делаю</div>
     <div class="services">
-      <div class="service-card">
-        <h3>📊 PowerPoint</h3>
+      <div class="service-card animate-fade animate-fade-1">
+        <span class="emoji">📊</span>
+        <h3>PowerPoint</h3>
         <p>Презентации для защиты проектов, уроков, рефератов, докладов. Единый стиль, качественный дизайн.</p>
       </div>
-      <div class="service-card">
-        <h3>📝 Word</h3>
-        <p>Документы, отчёты, письма, рефераты. Оформление по ГОСТ — по запросу.</p>
+      <div class="service-card animate-fade animate-fade-2">
+        <span class="emoji">📝</span>
+        <h3>Word</h3>
+        <p>Документы, отчёты, письма, рефераты. Оформление по ГОСТ — дополнительно +200 ₽.</p>
       </div>
-      <div class="service-card">
-        <h3>📈 Excel</h3>
+      <div class="service-card animate-fade animate-fade-3">
+        <span class="emoji">📈</span>
+        <h3>Excel</h3>
         <p>Таблицы, сметы, расчёты, бюджеты, простые дашборды с формулами.</p>
       </div>
     </div>
@@ -106,151 +257,186 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
 
   <!-- Портфолио -->
   <div class="section">
-    <div class="section-title">Примеры работ</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div class="card" style="padding:0;overflow:hidden">
-        <img src="portfolio-preview.jpg" alt="Презентация Разведение гусей" style="width:100%;height:200px;object-fit:cover;display:block">
-        <div style="padding:16px 20px">
-          <h3 style="font-size:16px;font-weight:700;color:#173B34;margin-bottom:4px">Разведение и выращивание гусей</h3>
-          <p style="font-size:13px;color:#5F7A6A;margin-bottom:10px">Проект 9 класс · 15 слайдов</p>
-          <a href="https://raw.githubusercontent.com/Peter937-dev/vizitka1/main/razvedenie-gusey.pptx" class="btn" style="font-size:13px;padding:8px 16px">📥 Смотреть пример</a>
+    <div class="section-title animate-fade animate-fade-1">Примеры работ</div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item animate-fade animate-fade-1">
+        <img src="portfolio-preview-2.jpg" alt="Презентация Разведение гусей">
+        <div class="info">
+          <h3>Разведение и выращивание гусей</h3>
+          <div class="meta">Проект 9 класс · 15 слайдов · Биология</div>
+          <a href="https://raw.githubusercontent.com/Peter937-dev/vizitka1/main/razvedenie-gusey.pptx" class="btn">📥 Смотреть пример</a>
         </div>
       </div>
-      <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:320px;border:2px dashed #D7E4DC;background:#FAFCFA">
-        <div style="text-align:center;padding:24px">
-          <div style="font-size:40px;margin-bottom:8px">➕</div>
-          <p style="font-size:14px;color:#5F7A6A">Скоро здесь появится ваша работа</p>
+      <div class="portfolio-empty animate-fade animate-fade-2">
+        <div class="empty-content">
+          <div class="empty-icon">➕</div>
+          <p style="color:#5F7A6A;font-size:15px;font-weight:500">Скоро здесь появится ваша работа</p>
+          <p style="color:#8ABBA2;font-size:13px;margin-top:4px">Первый заказ — со скидкой 20%</p>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-title">Прайс-лист</div>
-    <table class="price-table">
-      <tr>
-        <th>Услуга</th>
-        <th>Объём</th>
-        <th>Срок</th>
-        <th>Цена</th>
-      </tr>
-      <tr>
-        <td>Презентация</td>
-        <td>5–7 слайдов</td>
-        <td class="time-col">1 день</td>
-        <td class="price-col">300–500 ₽</td>
-      </tr>
-      <tr>
-        <td>Презентация</td>
-        <td>8–12 слайдов</td>
-        <td class="time-col">1–2 дня</td>
-        <td class="price-col">500–800 ₽</td>
-      </tr>
-      <tr>
-        <td>Презентация</td>
-        <td>10–15 слайдов</td>
-        <td class="time-col">2 дня</td>
-        <td class="price-col">700–1 500 ₽</td>
-      </tr>
-      <tr>
-        <td>Документ Word</td>
-        <td>до 10 страниц</td>
-        <td class="time-col">1 день</td>
-        <td class="price-col">от 300 ₽</td>
-      </tr>
-      <tr>
-        <td>Word + ГОСТ</td>
-        <td>до 10 страниц</td>
-        <td class="time-col">1–2 дня</td>
-        <td class="price-col">от 500 ₽</td>
-      </tr>
-      <tr>
-        <td>Excel (таблица / смета)</td>
-        <td>—</td>
-        <td class="time-col">1 день</td>
-        <td class="price-col">от 300 ₽</td>
-      </tr>
-      <tr>
-        <td>Срочный заказ</td>
-        <td>2–3 часа</td>
-        <td class="time-col">В день заказа</td>
-        <td class="price-col">+30%</td>
-      </tr>
-    </table>
-    <div class="note-card">
-      <strong>Важно:</strong> Если у вас нет готового материала, а есть только тема — я могу сам найти информацию и сделать всё «под ключ». Цена обсуждается индивидуально.
     </div>
   </div>
 
-  <!-- Форма заказа -->
+  <!-- Прайс -->
   <div class="section">
-    <div class="section-title">Оставить заявку</div>
-    <div class="form-card">
+    <div class="section-title animate-fade animate-fade-1">Прайс-лист</div>
+    <div class="price-table-wrap animate-fade animate-fade-2">
+      <table class="price-table">
+        <tr>
+          <th>Услуга</th>
+          <th>Объём</th>
+          <th>Срок</th>
+          <th>Цена</th>
+        </tr>
+        <tr>
+          <td>📊 Презентация</td>
+          <td>5–7 слайдов</td>
+          <td class="time-col">1 день</td>
+          <td class="price-col">300–500 ₽</td>
+        </tr>
+        <tr>
+          <td>📊 Презентация</td>
+          <td>8–12 слайдов</td>
+          <td class="time-col">1–2 дня</td>
+          <td class="price-col">500–800 ₽</td>
+        </tr>
+        <tr>
+          <td>📊 Презентация</td>
+          <td>10–15 слайдов</td>
+          <td class="time-col">2 дня</td>
+          <td class="price-col">700–1 500 ₽</td>
+        </tr>
+        <tr>
+          <td>📝 Word</td>
+          <td>до 10 страниц</td>
+          <td class="time-col">1 день</td>
+          <td class="price-col">от 300 ₽</td>
+        </tr>
+        <tr>
+          <td>📝 Word + ГОСТ</td>
+          <td>до 10 страниц</td>
+          <td class="time-col">1–2 дня</td>
+          <td class="price-col">от 500 ₽</td>
+        </tr>
+        <tr>
+          <td>📈 Excel</td>
+          <td>таблица / смета</td>
+          <td class="time-col">1 день</td>
+          <td class="price-col">от 300 ₽</td>
+        </tr>
+        <tr>
+          <td>⚡ Срочный заказ</td>
+          <td>2–3 часа</td>
+          <td class="time-col">В день заказа</td>
+          <td class="price-col">+30% <span class="badge">Срочно</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="why-note" style="margin-top:16px;animation:fadeUp 0.6s ease 0.4s both">
+      <strong>🔑 Важно:</strong> Если у вас нет готового материала, а есть только тема — я могу найти информацию и сделать всё «под ключ». Цена обсуждается индивидуально.
+    </div>
+  </div>
+
+  <!-- Форма -->
+  <div class="section">
+    <div class="section-title animate-fade animate-fade-1">Оставить заявку</div>
+    <div class="form-card animate-fade animate-fade-2">
       <form id="orderForm">
         <div class="form-row">
           <div class="form-group">
             <label for="name">Как к вам обращаться</label>
-            <input type="text" name="name" id="name" placeholder="Имя" required>
+            <input type="text" name="name" id="name" placeholder="Имя или название организации" required>
           </div>
           <div class="form-group">
             <label for="contact">Telegram / VK / Email</label>
-            <input type="text" name="contact" id="contact" placeholder="@username или email" required>
+            <input type="text" name="contact" id="contact" placeholder="@username или email для связи" required>
           </div>
         </div>
         <div class="form-group">
           <label for="type">Что нужно сделать</label>
           <select name="type" id="type">
-            <option value="Презентация">Презентация</option>
-            <option value="Документ Word">Документ Word</option>
-            <option value="Таблица Excel">Таблица Excel</option>
-            <option value="Другое">Другое</option>
+            <option value="Презентация">📊 Презентация</option>
+            <option value="Документ Word">📝 Документ Word</option>
+            <option value="Таблица Excel">📈 Таблица Excel</option>
+            <option value="Другое">🔧 Другое</option>
           </select>
         </div>
         <div class="form-group">
           <label for="topic">Тема и подробности</label>
-          <textarea name="topic" id="topic" placeholder="Опишите тему: о чём презентация, сколько слайдов, есть ли материал, срок" required></textarea>
+          <textarea name="topic" id="topic" placeholder="Опишите задачу: тема, объём, срок, есть ли готовый материал, особые пожелания" required></textarea>
         </div>
         <input type="hidden" name="access_key" value="5a3c5a23-1c2a-4b1e-9e5c-8f2d7c1e3b9d">
         <input type="hidden" name="subject" value="Новая заявка с сайта">
         <input type="checkbox" name="botcheck" style="display:none">
         <button type="submit" class="btn btn-block">📨 Отправить заявку</button>
       </form>
-      <div id="formSuccess" style="display:none;text-align:center;padding:40px 0">
-        <div style="font-size:48px;margin-bottom:12px">✅</div>
-        <h3 style="color:#0E8A5F;margin-bottom:8px">Заявка отправлена!</h3>
-        <p style="color:#5F7A6A">Я свяжусь с вами в ближайшее время. Спасибо!</p>
+      <div class="success-block" id="formSuccess">
+        <div class="check">✅</div>
+        <h3>Заявка отправлена!</h3>
+        <p style="color:#5F7A6A;font-size:16px">Я свяжусь с вами в ближайшее время. Обычно отвечаю в течение часа.</p>
       </div>
     </div>
   </div>
 
   <!-- Контакты -->
   <div class="section">
-    <div class="section-title">Мои контакты</div>
+    <div class="section-title animate-fade animate-fade-1">Мои контакты</div>
     <div class="contacts">
       <a href="mailto:Solaga16@yandex.ru" class="contact-btn primary">✉️ Почта</a>
       <a href="tg://resolve?domain=MelodyBattler" class="contact-btn">💬 Telegram</a>
       <a href="https://vk.com/idpetrov8961" target="_blank" class="contact-btn">💬 VK</a>
       <a href="tel:+79615179410" class="contact-btn">📞 Позвонить</a>
     </div>
+    <p style="text-align:center;color:#8ABBA2;font-size:14px;margin-top:20px">Работаю с 8:00 до 22:00 · Срочные заказы в любое время</p>
   </div>
 </div>
 
-<div class="footer">Пётр Камший · Краснодар · 2026</div>
+<div class="footer">Пётр Камший · Краснодар · 2026 · Все права защищены</div>
 
 <script>
+// Scroll to top button
+window.addEventListener('scroll', function() {
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// Form submission
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
   var form = this;
   var data = new FormData(form);
+  var btn = form.querySelector('button[type="submit"]');
+  btn.textContent = '⏳ Отправка...';
+  btn.disabled = true;
   fetch('https://api.web3forms.com/submit', { method: 'POST', body: data })
     .then(function(res) { return res.json(); })
     .then(function(json) {
       if (json.success) {
         form.style.display = 'none';
         document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        btn.textContent = '📨 Отправить заявку';
+        btn.disabled = false;
+        alert('Ошибка отправки. Попробуйте написать мне в Telegram или VK.');
       }
     });
 });
-</script>
 
+// Scroll animations
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.animate-fade').forEach(function(el) {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(40px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
