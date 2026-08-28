@@ -83,7 +83,7 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
       </div>
     </div>
     <div class="note-card" style="border-left:4px solid #0E8A5F">
-      <strong>💡 Как работаю:</strong> После обсуждения заказа — <strong>предоплата 50%</strong>. Остальное после готовности. Это стандартная практика, чтобы я мог сразу начать работу, а вы были уверены в серьёзности договорённости.
+      <strong>💡 Как работаю:</strong> После обсуждения заказа — <strong>полная предоплата</strong>. Это гарантирует, что я сразу начинаю работу, а вы получаете результат в срок. Если работа не понравится — верну деньги.
     </div>
   </div>
   <div class="section">
@@ -104,7 +104,26 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
     </div>
   </div>
 
-  <!-- Прайс-лист -->
+  <!-- Портфолио -->
+  <div class="section">
+    <div class="section-title">Примеры работ</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="padding:0;overflow:hidden">
+        <img src="portfolio-preview.jpg" alt="Презентация Разведение гусей" style="width:100%;height:200px;object-fit:cover;display:block">
+        <div style="padding:16px 20px">
+          <h3 style="font-size:16px;font-weight:700;color:#173B34;margin-bottom:4px">Разведение и выращивание гусей</h3>
+          <p style="font-size:13px;color:#5F7A6A;margin-bottom:10px">Проект 9 класс · 15 слайдов</p>
+          <a href="https://raw.githubusercontent.com/Peter937-dev/vizitka1/main/razvedenie-gusey.pptx" class="btn" style="font-size:13px;padding:8px 16px">📥 Смотреть пример</a>
+        </div>
+      </div>
+      <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:320px;border:2px dashed #D7E4DC;background:#FAFCFA">
+        <div style="text-align:center;padding:24px">
+          <div style="font-size:40px;margin-bottom:8px">➕</div>
+          <p style="font-size:14px;color:#5F7A6A">Скоро здесь появится ваша работа</p>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="section">
     <div class="section-title">Прайс-лист</div>
     <table class="price-table">
@@ -170,26 +189,29 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
         <div class="form-row">
           <div class="form-group">
             <label for="name">Как к вам обращаться</label>
-            <input type="text" id="name" placeholder="Имя" required>
+            <input type="text" name="name" id="name" placeholder="Имя" required>
           </div>
           <div class="form-group">
             <label for="contact">Telegram / VK / Email</label>
-            <input type="text" id="contact" placeholder="@username или email" required>
+            <input type="text" name="contact" id="contact" placeholder="@username или email" required>
           </div>
         </div>
         <div class="form-group">
           <label for="type">Что нужно сделать</label>
-          <select id="type">
-            <option value="presentation">Презентация</option>
-            <option value="word">Документ Word</option>
-            <option value="excel">Таблица Excel</option>
-            <option value="other">Другое</option>
+          <select name="type" id="type">
+            <option value="Презентация">Презентация</option>
+            <option value="Документ Word">Документ Word</option>
+            <option value="Таблица Excel">Таблица Excel</option>
+            <option value="Другое">Другое</option>
           </select>
         </div>
         <div class="form-group">
           <label for="topic">Тема и подробности</label>
-          <textarea id="topic" placeholder="Опишите тему: о чём презентация, сколько слайдов, есть ли материал, срок" required></textarea>
+          <textarea name="topic" id="topic" placeholder="Опишите тему: о чём презентация, сколько слайдов, есть ли материал, срок" required></textarea>
         </div>
+        <input type="hidden" name="access_key" value="5a3c5a23-1c2a-4b1e-9e5c-8f2d7c1e3b9d">
+        <input type="hidden" name="subject" value="Новая заявка с сайта">
+        <input type="checkbox" name="botcheck" style="display:none">
         <button type="submit" class="btn btn-block">📨 Отправить заявку</button>
       </form>
       <div id="formSuccess" style="display:none;text-align:center;padding:40px 0">
@@ -217,24 +239,16 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
 <script>
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const name = document.getElementById('name').value;
-  const contact = document.getElementById('contact').value;
-  const type = document.getElementById('type').value;
-  const topic = document.getElementById('topic').value;
-
-  const typeNames = { presentation: 'Презентация', word: 'Документ Word', excel: 'Таблица Excel', other: 'Другое' };
-
-  const body = encodeURIComponent(
-    'Новая заявка с сайта:\n\n' +
-    'Имя: ' + name + '\n' +
-    'Контакт: ' + contact + '\n' +
-    'Тип: ' + typeNames[type] + '\n' +
-    'Тема: ' + topic
-  );
-
-  window.location.href = 'mailto:Solaga16@yandex.ru?subject=Заявка%20с%20сайта&body=' + body;
-  document.getElementById('orderForm').style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
+  var form = this;
+  var data = new FormData(form);
+  fetch('https://api.web3forms.com/submit', { method: 'POST', body: data })
+    .then(function(res) { return res.json(); })
+    .then(function(json) {
+      if (json.success) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }
+    });
 });
 </script>
 
