@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -378,6 +379,9 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
       </table>
     </div>
     <div class="why-note" style="margin-top:16px;animation:fadeUp 0.6s ease 0.4s both">
+      <strong>🔥 Новым клиентам:</strong> первая презентация <strong>всего 300 ₽</strong> независимо от объёма, чтобы вы оценили качество. Потом работаю по прайсу.
+    </div>
+    <div class="why-note" style="margin-top:16px;animation:fadeUp 0.6s ease 0.4s both">
       <strong>🔑 Важно:</strong> Если у вас нет готового материала, а есть только тема — я могу найти информацию и сделать всё «под ключ». Цена обсуждается индивидуально.
     </div>
   </div>
@@ -412,13 +416,14 @@ body{font-family:-apple-system,Inter,'Segoe UI',sans-serif;background:#F4F7F2;co
         </div>
         <input type="hidden" name="access_key" value="5a3c5a23-1c2a-4b1e-9e5c-8f2d7c1e3b9d">
         <input type="hidden" name="subject" value="Новая заявка с сайта">
+        <input type="hidden" name="redirect" value="https://petr-kamshiy.netlify.app/">
         <input type="checkbox" name="botcheck" style="display:none">
         <button type="submit" class="btn btn-block">📨 Отправить заявку</button>
       </form>
       <div class="success-block" id="formSuccess">
         <div class="check">✅</div>
         <h3>Заявка отправлена!</h3>
-        <p style="color:#5F7A6A;font-size:16px">Я свяжусь с вами в ближайшее время. Обычно отвечаю в течение часа.</p>
+        <p style="color:#5F7A6A;font-size:16px">Письмо открылось в вашей почте — просто нажмите «Отправить». Я свяжусь с вами в ближайшее время!</p>
       </div>
     </div>
   </div>
@@ -463,23 +468,17 @@ window.addEventListener('scroll', function() {
 // Form submission
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  var form = this;
-  var data = new FormData(form);
-  var btn = form.querySelector('button[type="submit"]');
-  btn.textContent = '⏳ Отправка...';
-  btn.disabled = true;
-  fetch('https://api.web3forms.com/submit', { method: 'POST', body: data })
-    .then(function(res) { return res.json(); })
-    .then(function(json) {
-      if (json.success) {
-        form.style.display = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
-      } else {
-        btn.textContent = '📨 Отправить заявку';
-        btn.disabled = false;
-        alert('Ошибка отправки. Попробуйте написать мне в Telegram или VK.');
-      }
-    });
+  var name = document.getElementById('name').value;
+  var contact = document.getElementById('contact').value;
+  var type = document.getElementById('type').value;
+  var topic = document.getElementById('topic').value;
+  var body = 'Имя: ' + name + '%0D%0A';
+  body += 'Контакт: ' + contact + '%0D%0A';
+  body += 'Тип: ' + type + '%0D%0A';
+  body += 'Тема: ' + topic;
+  window.location.href = 'mailto:Solaga16@yandex.ru?subject=Заявка%20с%20сайта&body=' + body;
+  this.style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
 });
 
 // Scroll animations
