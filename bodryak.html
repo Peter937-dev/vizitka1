@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bodryak — бодрое утро</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Inter,sans-serif}
+body{background:#0B1A2F;color:#E8EDF2;min-height:100vh;display:flex;flex-direction:column}
+.container{max-width:420px;margin:0 auto;padding:16px;width:100%}
+.header{text-align:center;padding:24px 0 16px}
+.header h1{font-size:28px;font-weight:800;color:#4FC3F7}
+.header p{font-size:13px;color:#7A8FA3;margin-top:4px}
+.card{background:#12263A;border-radius:16px;padding:20px;margin-bottom:12px;border:1px solid #1E3A5C}
+.card-title{font-size:14px;font-weight:600;color:#4FC3F7;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.row{display:flex;gap:12px;margin-bottom:8px}
+.row>*{flex:1}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:#4FC3F7;color:#0B1A2F}
+.btn-primary:hover{background:#39B0E4}
+.btn-danger{background:#E53935;color:#fff}
+.btn-danger:hover{background:#C62828}
+.btn-secondary{background:#1E3A5C;color:#E8EDF2}
+.btn-secondary:hover{background:#2A4A6E}
+.time-input{background:#1E3A5C;border:1px solid #2A4A6E;border-radius:10px;padding:12px;font-size:18px;color:#E8EDF2;width:100%;text-align:center}
+.time-input:focus{outline:none;border-color:#4FC3F7}
+label{font-size:13px;color:#7A8FA3;display:block;margin-bottom:4px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-item{background:#1E3A5C;border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700;color:#4FC3F7}
+.stat-label{font-size:11px;color:#7A8FA3;margin-top:2px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.cal-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:#1E3A5C;color:#7A8FA3}
+.cal-day.active{background:#4FC3F7;color:#0B1A2F;font-weight:600}
+.cal-day.miss{background:#E53935;color:#fff}
+.cal-day-label{text-align:center;font-size:10px;color:#5A7A8A;padding:4px 0}
+.alarm-active{position:fixed;top:0;left:0;right:0;bottom:0;background:#0B1A2F;z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.alarm-active.show{display:flex}
+.alarm-time{font-size:64px;font-weight:800;color:#4FC3F7;margin-bottom:8px}
+.alarm-quote{font-size:18px;color:#E8EDF2;margin-bottom:32px;max-width:300px}
+.alarm-qr{background:#fff;padding:16px;border-radius:12px;margin-bottom:16px;text-align:center}
+.alarm-qr img{width:180px;height:180px;display:block;margin:0 auto}
+.alarm-qr p{font-size:12px;color:#333;margin-top:8px}
+#qrcode-canvas{display:none}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container" id="mainApp">
+  <div class="header">
+    <h1>⚡ Bodryak</h1>
+    <p>Просыпайся бодрым каждый день</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌙 Расчёт фаз сна</div>
+    <div class="row">
+      <div>
+        <label>Ложусь спать</label>
+        <input type="time" class="time-input" id="sleepTime" value="23:00">
+      </div>
+      <div>
+        <label>Или встать в</label>
+        <input type="time" class="time-input" id="wakeTime" value="07:00">
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:12px;background:#1E3A5C;border-radius:10px;text-align:center">
+      <div style="font-size:13px;color:#7A8FA3">Лучшее время для пробуждения (циклы по 90 мин)</div>
+      <div style="font-size:16px;font-weight:600;color:#4FC3F7;margin-top:4px" id="sleepPhases">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⏰ Будильник</div>
+    <div class="row">
+      <div>
+        <label>Время звонка</label>
+        <input type="time" class="time-input" id="alarmTime" value="07:00">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="setAlarm()" id="alarmBtn">🔔 Установить будильник</button>
+    <div style="margin-top:8px;font-size:12px;color:#7A8FA3;text-align:center" id="alarmStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Статистика сна</div>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Всего дней</div></div>
+      <div class="stat-item"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Дней подряд</div></div>
+      <div class="stat-item"><div class="stat-num" id="statAvgSleep">-</div><div class="stat-label">Средний сон</div></div>
+      <div class="stat-item"><div class="stat-num" id="statSnoozes">0</div><div class="stat-label">Отложено раз</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Календарь</div>
+    <div style="font-size:13px;color:#7A8FA3;margin-bottom:8px" id="calendarMonth"></div>
+    <div class="cal-day-label">Пн Вт Ср Чт Пт Сб Вс</div>
+    <div class="calendar" id="calendarGrid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏆 Бодрое утро</div>
+    <p style="font-size:14px;color:#7A8FA3;margin-bottom:12px" id="quoteOfDay">«Чтобы отключить будильник — отсканируй QR-код в другой комнате»</p>
+    <button class="btn btn-secondary" onclick="resetStats()">Сбросить статистику</button>
+  </div>
+</div>
+
+<div class="alarm-active" id="alarmActive">
+  <div class="alarm-time" id="alarmDisplayTime">07:00</div>
+  <div class="alarm-quote" id="alarmDisplayQuote">Проснись! Новый день ждёт</div>
+  <div class="alarm-qr" id="qrSection">
+    <img src="" id="qrImage" alt="QR-код">
+    <p>Отсканируй QR-код, чтобы отключить будильник</p>
+  </div>
+  <button class="btn btn-danger" onclick="snoozeAlarm()">😴 Отложить на 5 мин</button>
+  <button class="btn btn-primary" style="margin-top:8px" onclick="stopAlarm()">✅ Я встал!</button>
+</div>
+
+<canvas id="qrcode-canvas"></canvas>
+
+<script>
+// === QR Code Generator ===
+function generateQR(text, size) {
+  const canvas = document.getElementById('qrcode-canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  
+  // Simple QR-like pattern (visual representation)
+  const cellSize = size / 25;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = '#000';
+  
+  // Position patterns
+  const drawPattern = (x, y) => {
+    ctx.fillRect(x + cellSize, y + cellSize, 7 * cellSize, 7 * cellSize);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x + 2 * cellSize, y + 2 * cellSize, 5 * cellSize, 5 * cellSize);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x + 3 * cellSize, y + 3 * cellSize, 3 * cellSize, 3 * cellSize);
+  };
+  drawPattern(0, 0);
+  drawPattern(18 * cellSize, 0);
+  drawPattern(0, 18 * cellSize);
+  
+  // Data bits based on text hash
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) hash = ((hash << 5) - hash) + text.charCodeAt(i);
+  for (let r = 0; r < 25; r++) {
+    for (let c = 0; c < 25; c++) {
+      if (r < 8 && c < 8) continue;
+      if (r < 8 && c > 17) continue;
+      if (r > 17 && c < 8) continue;
+      if (r === 6 || c === 6) { ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize); continue; }
+      const bit = (hash >> ((r * 25 + c) % 32)) & 1;
+      if (bit) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+    }
+  }
+  return canvas.toDataURL();
+}
+
+// === Sleep Phase Calculator ===
+function calcSleepPhases() {
+  const sleep = document.getElementById('sleepTime').value;
+  const wake = document.getElementById('wakeTime').value;
+  const [sh, sm] = sleep.split(':').map(Number);
+  const [wh, wm] = wake.split(':').map(Number);
+  let sleepMin = sh * 60 + sm;
+  let wakeMin = wh * 60 + wm;
+  if (wakeMin <= sleepMin) wakeMin += 24 * 60;
+  const totalMin = wakeMin - sleepMin;
+  const cycles = Math.floor(totalMin / 90);
+  const bestCycles = Math.max(1, Math.min(cycles, 6));
+  const bestWakeMin = sleepMin + bestCycles * 90;
+  const bh = Math.floor((bestWakeMin % (24 * 60)) / 60);
+  const bm = Math.round((bestWakeMin % (24 * 60)) % 60);
+  const totalH = Math.floor(totalMin / 60);
+  const totalM = totalMin % 60;
+  document.getElementById('sleepPhases').textContent = 
+    `😴 ${totalH}ч ${totalM}м сна → ⏰ встать в ${String(bh).padStart(2,'0')}:${String(bm).padStart(2,'0')} (${bestCycles} циклов)`;
+}
+document.getElementById('sleepTime').addEventListener('change', calcSleepPhases);
+document.getElementById('wakeTime').addEventListener('change', calcSleepPhases);
+calcSleepPhases();
+
+// === Alarm System ===
+let alarmTimer = null;
+let snoozeCount = 0;
+const quotes = [
+  'Новый день — новые возможности! 🚀',
+  'Ты сильнее, чем думаешь. Вставай! 💪',
+  'Проснись и сияй! ☀️',
+  'Твой успех начинается с утра',
+  'Не откладывай жизнь на потом',
+  'Самый сложный шаг — первый. Сделай его!',
+  'Ты можешь больше, чем кажется',
+];
+
+function getQRCodeData() {
+  const today = new Date().toISOString().split('T')[0];
+  return `wakeup-${today}-${Math.random().toString(36).slice(2, 6)}`;
+}
+
+function setAlarm() {
+  const time = document.getElementById('alarmTime').value;
+  if (!time) return;
+  const [h, m] = time.split(':').map(Number);
+  const now = new Date();
+  const alarm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+  if (alarm <= now) alarm.setDate(alarm.getDate() + 1);
+  const diff = alarm.getTime() - now.getTime();
+  
+  if (alarmTimer) clearTimeout(alarmTimer);
+  snoozeCount = 0;
+  
+  // Generate QR
+  const qrData = getQRCodeData();
+  const qrImg = document.getElementById('qrImage');
+  qrImg.src = generateQR(qrData, 200);
+  
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('alarmDisplayQuote').textContent = quote;
+  document.getElementById('alarmDisplayTime').textContent = time;
+  
+  alarmTimer = setTimeout(() => {
+    document.getElementById('alarmActive').classList.add('show');
+    document.getElementById('alarmBtn').textContent = '🔔 Будильник звенит!';
+    // Try to play sound
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 800;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      osc.start();
+      setTimeout(() => { osc.stop(); }, 2000);
+    } catch(e) {}
+  }, diff);
+  
+  document.getElementById('alarmStatus').textContent = `⏰ Будильник в ${time} (через ${Math.round(diff/60000)} мин)`;
+  document.getElementById('alarmBtn').textContent = '✅ Будильник установлен';
+  saveLog('set', time);
+}
+
+function stopAlarm() {
+  document.getElementById('alarmActive').classList.remove('show');
+  document.getElementById('alarmBtn').textContent = '🔔 Установить будильник';
+  document.getElementById('alarmStatus').textContent = '✅ Проснулся! Молодец!';
+  if (alarmTimer) { clearTimeout(alarmTimer); alarmTimer = null; }
+  saveLog('wake', new Date().toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'}));
+  updateStats();
+}
+
+function snoozeAlarm() {
+  snoozeCount++;
+  document.getElementById('alarmActive').classList.remove('show');
+  setTimeout(() => {
+    document.getElementById('alarmActive').classList.add('show');
+    document.getElementById('alarmDisplayQuote').textContent = 'Эй, ты ещё спишь? Вставай! 🔥';
+  }, 300000);
+  saveLog('snooze', snoozeCount);
+  updateStats();
+}
+
+// === Statistics ===
+function getLogs() {
+  try { return JSON.parse(localStorage.getItem('bodryak_logs')) || []; } catch { return []; }
+}
+
+function saveLog(type, value) {
+  const logs = getLogs();
+  logs.push({ date: new Date().toISOString().split('T')[0], type, value, ts: Date.now() });
+  localStorage.setItem('bodryak_logs', JSON.stringify(logs));
+  updateStats();
+}
+
+function updateStats() {
+  const logs = getLogs();
+  const today = new Date().toISOString().split('T')[0];
+  const todayLogs = logs.filter(l => l.date === today);
+  const wakes = logs.filter(l => l.type === 'wake');
+  const snoozes = logs.filter(l => l.type === 'snooze');
+  const totalSnoozes = snoozes.reduce((s, l) => s + (Number(l.value) || 0), 0);
+  
+  // Streak
+  let streak = 0;
+  let d = new Date();
+  while (true) {
+    const ds = d.toISOString().split('T')[0];
+    if (logs.some(l => l.date === ds && l.type === 'wake')) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    } else break;
+  }
+  
+  document.getElementById('statTotal').textContent = wakes.length;
+  document.getElementById('statStreak').textContent = streak;
+  document.getElementById('statSnoozes').textContent = totalSnoozes;
+  document.getElementById('statAvgSleep').textContent = todayLogs.some(l => l.type === 'wake') ? '✅' : '—';
+  
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const logs = getLogs();
+  const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  document.getElementById('calendarMonth').textContent = `${monthNames[month]} ${year}`;
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let html = '';
+  for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) html += '<div class="cal-day"></div>';
+  
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const woke = logs.some(l => l.date === ds && l.type === 'wake');
+    const missed = logs.some(l => l.date === ds && l.type === 'miss');
+    const cls = `cal-day${woke ? ' active' : ''}${missed ? ' miss' : ''}`;
+    html += `<div class="${cls}">${d}</div>`;
+  }
+  document.getElementById('calendarGrid').innerHTML = html;
+}
+
+function resetStats() {
+  if (confirm('Сбросить всю статистику?')) {
+    localStorage.removeItem('bodryak_logs');
+    updateStats();
+  }
+}
+
+// Night mode detection
+const now = new Date();
+const h = now.getHours();
+if (h >= 22 || h < 6) {
+  document.body.style.background = '#070F1A';
+}
+
+// Init
+updateStats();
+calcSleepPhases();
+
+// Check if alarm should ring (page reload)
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('bodryak_alarm');
+  if (saved) {
+    const [h, m] = saved.split(':').map(Number);
+    const now = new Date();
+    const alarm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+    if (Math.abs(now.getTime() - alarm.getTime()) < 300000) {
+      document.getElementById('alarmActive').classList.add('show');
+    }
+  }
+});
+</script>
+</body>
+</html>
