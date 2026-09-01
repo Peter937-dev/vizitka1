@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://raw.githubusercontent.com/Peter937-dev/vizitka1/main/sitemap.xml
